@@ -1,0 +1,55 @@
+//写一个日历，用*动态标明今天的日期
+package texttable;
+
+import java.time.*;
+import java.lang.*;
+
+public class calendar {
+	public static void main(String[] args) {
+		LocalDate date = LocalDate.now();
+		int month = date.getMonthValue();
+		int today = date.getDayOfMonth();
+		date = date.minusDays(today - 1);
+		DayOfWeek weekday = date.getDayOfWeek();
+		int value = weekday.getValue();
+		System.out.println("Mon Tue Wed Thu Fri Sat Sun");
+		for (int i=1;i<value;i++)
+			System.out.print("  ");
+		while (date.getMonthValue() == month)
+		{
+			System.out.printf("%3d",date.getDayOfMonth());
+			if(date.getDayOfMonth()==today)
+				System.out.print("*");
+			else
+				System.out.print(" ");
+			date = 	date.plusDays(1);
+			if(date.getDayOfWeek().getValue()== 1)System.out.println();
+			
+	
+	}
+		System.out.println();
+    calendar d1 =new calendar（）;//实例化对象
+		calendar.code（）;//对象名.函数名，调用函数
+		
+}
+//由于 hashCode方法定义在 Object 类中， 因此每个对象都有一个默认的散列码，其值为对象的存储地址。
+//调用hashcode函数得到对象得到散列码
+
+static void code() {
+	
+		String s = "OK";
+		StringBuilder sb = new StringBuilder(s);
+		System.out.println(s.hashCode()+" "+sb.hashCode());
+		String t = new String("OK");
+		StringBuilder tb = new StringBuilder(t);
+		System.out.println(t.hashCode()+" "+tb.hashCode());
+		
+}
+/*请注意， 字符串 s 与 t 拥有相同的散列码， 这是因为字符串的散列码是由内容导出
+的。而字符串缓冲 sb 与 tb却有着不同的散列码， 这是因为在 StringBuffer 类中没有定义
+hashCode 方法，它的散列码是由 Object 类的默认 hashCode 方法导出的对象存储地址。
+如果重新定义 equals方法，就必须重新定义 hashCode 方法， 以便用户可以将对象插人
+到散列表中.
+*/
+	
+}

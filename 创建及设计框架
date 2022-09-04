@@ -1,0 +1,68 @@
+//图形程序设计
+//创建框架，框架定位
+
+package texttable;
+
+import java.awt.*;
+import javax.swing.*;
+
+public class Simple {
+	public static void main(String[] args) {
+		EventQueue.invokeLater(()->
+		{
+			SimpleFrame frame = new SimpleFrame();
+			frame.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
+			frame.setVisible(true);
+			//setBounds(x,y,width,height);
+			//frame.setLocationByPlatform(true);
+		
+			// frame.getTitle();
+			frame.setTitle("测试窗口");
+			/*以Dimension对象的形式返回屏幕的大小，
+			
+			*Dimension对象同事用公有实例变量width和height保存屏幕的宽度和高度
+			*/
+			
+			
+			
+			
+			
+		});
+	}
+	
+}
+@SuppressWarnings("serial")
+class SimpleFrame extends JFrame
+{
+	private static final int DEFAULT_WIDTH = 300;
+	private static final int DEFAULT_HEIGHT = 200;
+	
+	public SimpleFrame()
+	{
+		//setSize(DEFAULT_WIDTH,DEFAULT_HEIGHT);
+		//setBounds(520,380,600,400);
+		
+		/*setUndecorated(true);
+		 * 框架显示前调用将不显示标题栏或按钮等装饰
+		 */
+		
+		Toolkit kit = Toolkit.getDefaultToolkit() ;
+		Dimension screenSize = kit.getScreenSize();
+		int screenwidth = screenSize.width;
+		int screenheight = screenSize.height;
+		//将框架大小设定为上面取值的50%，然后告知窗口系统定位框架
+		setSize(screenwidth/2,screenheight/2);
+		/*
+		 * frame.setExtendedState(Frame.MAXIMIZED_BOTH);将框架设置到最大
+		 */
+		setResizable(true);
+		setLocationByPlatform(true);
+		boolean L =isLocationByPlatform();
+		System.out.println(""+L);
+		Image img=new ImageIcon("icon.gif").getImage();
+		setIconImage(img);
+		//toFront();将这个窗口显示在其他窗口前面
+		//toBack();将这个窗口移到桌面窗口栈的后面
+	}
+	
+}

@@ -1,0 +1,25 @@
+package texttable;
+
+import java.awt.*;
+import javax.swing.*;
+
+public class first extends JFrame{
+public static void main(String[] args) {
+
+	first w = new first();
+	w.init();
+
+
+}
+public void init() {
+	this.setTitle("示例窗口");
+	this.setSize(600, 400);
+	this.setLocation(300, 300);
+	this.setVisible(true);
+}
+public void paint(Graphics g) {
+	super.paint(g);
+	
+	g.drawString("杨先生你好！", 100,100);
+}
+}

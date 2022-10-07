@@ -1,0 +1,33 @@
+package texttable;
+
+import java.util.Scanner;
+
+public class transition{
+	public static void main(String args[]) {
+		Scanner scanner = new Scanner(System.in);
+		//每隔两个字符用：分隔
+		String[] tx = scanner.nextLine().split(":",2);
+		int hour = Integer.parseInt(tx[0]);
+		int minute = Integer.parseInt(tx[1]);
+		String flag;
+		if (hour> 0 && hour<12) {
+			flag = "AM";
+			
+		}
+		else if(hour ==24||hour==0) {
+			hour=12;
+			flag = "AM";
+			
+		}
+		else {
+			flag = "PM";
+			hour%=12;
+			
+		}
+		System.out.println(alignItem(hour)+":"+alignItem(minute)+""+flag);
+	}
+	//输出长度为2的整数
+	public static String alignItem(int i) {
+		return String.format("%02d", i);
+	}
+}

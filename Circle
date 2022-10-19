@@ -1,0 +1,28 @@
+package texttable;
+
+import java.util.Scanner;
+
+public class Circle{
+	double r;
+	public void setR(double a) {
+		r=a;
+	}
+	public double getArea() {
+		double area;
+		return 3.14*r*r;
+	}
+	public double getPerimeter() {
+		return 2*3.14*r;
+	}
+	public static void  main(String args[]) {
+		Scanner scanner = new Scanner(System.in);
+		double a;
+		System.out.println("请输入圆的半径：");
+		a = scanner.nextDouble();
+		Circle c=new Circle();
+		c.setR(a);
+		c.getArea();
+		c.getPerimeter();
+		System.out.println("圆的半径="+a+"圆的面积="+c.getArea()+"圆的周长"+c.getPerimeter()+"");
+	}
+}

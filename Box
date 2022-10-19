@@ -1,0 +1,48 @@
+package texttable;
+
+import java.util.Scanner;
+
+public class Box{
+
+	int length;
+	int width;
+	int height;
+	public void setInfo(int a,int b,int c) {
+	length=a;
+	width=b;
+	height=c;
+	
+	
+}
+public int volumn() {
+	return length*width*height;
+}
+int area() {
+	return 2*(length*width+length*height+width*height);
+	
+}
+public String toString() {
+
+	return "长方体的的长 ="+length+",长方体的宽 ="+width+",长方体的高 ="+height+",体积 ="+volumn()+"，表面积 ="+area();
+}
+	public static void main(String[] args) {
+	
+	Box box = new Box();
+	Scanner input = new Scanner(System.in);
+	System.out.print("长：");
+	int a = input.nextInt();
+   System.out.print("宽：");
+	int b = input.nextInt();
+   System.out.print("高：");
+	int c =input.nextInt();
+	box.setInfo(a, b, c);
+	box.volumn();
+	box.area();
+	System.out.println(box.toString());
+	
+	}
+
+
+
+	
+	}

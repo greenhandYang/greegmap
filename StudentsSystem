@@ -1,0 +1,111 @@
+package texttable;
+import java.util.Scanner;
+
+public class students {
+    public static void print(){
+        System.out.println("欢迎来到学生信息系统!!!");
+        System.out.println("按1输入学生信息!");
+        System.out.println("按2查询学生信息!");
+    }
+    public static void print2(){
+        System.out.println("按1重新输入学生信息!");
+        System.out.println("按2查询学生信息!");
+        System.out.println("按0退出系统");
+    }
+
+    static Scanner sc = new Scanner(System.in);
+
+    public static void main(String[] args) {
+    	int n;
+    	 System.out.println("输入学生总数：");
+         n = sc.nextInt();
+
+        pupil[] arr1 = new pupil[n];
+        String[] arr2 = new String[5];
+        String[] arr3 = new String[5];
+        
+        arr2[0] = "学号: ";
+        arr2[1] = "姓名: ";
+        arr2[2] = "Java成绩: ";
+        arr2[3] = "高数成绩: ";
+        arr2[4] = "英语成绩: ";
+        
+
+        print();
+        int a = sc.nextInt();
+        while(a!=0){
+            switch (a){
+                case 1:
+                    for(int i = 0;i<n;i++){
+                        System.out.println("进行第"+(i+1)+"个学生的信息输入");
+                        for(int b = 0;b<5;b++){
+                            System.out.println("请输入"+arr2[b]);
+                            String c = sc.next();
+                            arr3[b]=c;
+                        }
+                        arr1[i] = new pupil(arr3[0],arr3[1],arr3[2],arr3[3],arr3[4]);
+                    }
+                    print2();
+                    a = sc.nextInt();
+                    break;
+                case 2:
+                    System.out.println("请输入你要查询的Java成绩:");
+                    String d = sc.next();
+                    for(int e = 0;e<n;e++){
+                        if (d.equals(arr1[e].getJavaScore())){
+                            System.out.println("学号:"+arr1[e].getNo());
+                            System.out.println("姓名:"+arr1[e].getName());
+                            System.out.println("Java成绩:"+arr1[e].getJavaScore());
+                            System.out.println("高数成绩:"+arr1[e].getMathScore());
+                            System.out.println("英语成绩:"+arr1[e].getEnglishScore());
+                        }
+                    }
+                    print2();
+                    a = sc.nextInt();
+                    break;
+                default:
+                    System.out.println("请输入正确的数字!!!");
+                    System.out.println("--------------------------------------------------------");
+                    print2();
+                    a = sc.nextInt();
+                    break;
+            }
+        }
+    }
+}
+
+class pupil {
+    private String No;
+    private String name;
+    private String JavaScore;
+    private String MathScore;
+    private String EnglishScore;
+
+    public pupil(String No, String name, String JavaScore, String MathScore, String EnglishScore) {
+        this.No = No;
+        this.name = name;
+        this.JavaScore = JavaScore;
+        this.MathScore = MathScore;
+        this.EnglishScore = EnglishScore;
+    }
+
+    public String getNo() {
+        return No;
+    }
+
+    public String getName() {
+        return name;
+    }
+
+    public String getJavaScore() {
+        return JavaScore;
+    }
+
+    public String getMathScore() {
+        return MathScore;
+    }
+
+    public String getEnglishScore() {
+        return EnglishScore;
+    }
+}

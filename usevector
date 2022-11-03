@@ -1,0 +1,25 @@
+package texttable;
+
+import java.util.Scanner;
+import java.util.Vector;
+
+public class usevector {
+
+	public static void main(String[] args) {
+	Vector<String> vec =new Vector<String>();
+	Scanner scan = new Scanner(System.in);
+	String st = scan.nextLine();
+	
+	while(!"end".equals(st)) {
+		
+	vec.addElement(st);
+	}
+	
+	int v=vec.size();
+	System.out.println(vec.toString());
+	vec.insertElementAt("NICE", v/2);
+	vec.trimToSize();
+	System.out.println(vec.toString());
+}
+}
+//Exception in thread "main" java.lang.OutOfMemoryError: Java heap space

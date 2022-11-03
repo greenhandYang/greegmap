@@ -1,0 +1,29 @@
+package texttable;
+import java.util.Scanner;
+import java.lang.Math;
+public class Triangulararea {
+public static void main(String[] args){
+
+    Scanner scan =new Scanner(System.in);
+    System.out.println("输入三角形的两边边长：");
+    double a = scan.nextDouble();
+    double b = scan.nextDouble();
+    System.out.println("输入其夹角度数：");
+    double c = scan.nextDouble();
+    double radians = Math.toRadians(c);
+    double sin = Math.sin(radians);
+    System.out.format("pi 的值为 %.4f%n", Math.PI);
+    System.out.format("%.1f 度的正弦值为 %.4f%n", c, Math.sin(radians));
+    
+    System.out.println("该三角形的面积为"+getArea(a,b,sin));
+	
+}
+
+
+private static double getArea(double a,double b,double sin){
+   double s;
+  
+   s=(a*b*sin)/2;
+   return s;
+  }
+}

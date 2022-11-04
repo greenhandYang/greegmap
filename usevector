@@ -6,20 +6,19 @@ import java.util.Vector;
 public class usevector {
 
 	public static void main(String[] args) {
-	Vector<String> vec =new Vector<String>();
+	Vector vec =new Vector(1,1);
 	Scanner scan = new Scanner(System.in);
-	String st = scan.nextLine();
 	
-	while(!"end".equals(st)) {
-		
+	String st;
+	do {
+		st = scan.next();
 	vec.addElement(st);
-	}
+	}while(!st.equals("end"));
 	
-	int v=vec.size();
+	int v=vec.capacity();
 	System.out.println(vec.toString());
 	vec.insertElementAt("NICE", v/2);
 	vec.trimToSize();
 	System.out.println(vec.toString());
 }
 }
-//Exception in thread "main" java.lang.OutOfMemoryError: Java heap space

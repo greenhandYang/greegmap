@@ -1,0 +1,302 @@
+#include <stdio.h>
+#include <stdlib.h>
+#include <string.h>
+
+struct Table
+{
+	char name[11];
+	int id;//编号 
+	int shuliang;
+	int kuhao;
+
+	struct Table *next;
+};
+
+void add_imformation(struct Table **head)
+{
+	struct Table *temp;
+	temp = (struct Table *)malloc(sizeof(struct Table));    //分配空间 
+	if (temp == NULL)
+	{
+		printf("内存分配失败！");
+		return;
+	}
+	printf("\n请输入产品名称：");
+	scanf_s("%s", temp->name, 11);
+	printf("\n请输入产品编号：");
+	scanf_s("%d", &temp->id);
+	printf("\n请输入产品数量：");
+	scanf_s("%d", &temp->shuliang);
+	printf("\n请输入存放的库号：");
+	scanf_s("%d", &temp->kuhao);
+	
+	printf("\n录入完成！\n");
+	temp->next = *head;          //temp指向头指针开始调用 
+	*head = temp;      //
+}
+
+//**************************************************
+//搜索指定产品的函数，根据操作数进行删除或显示
+//参数way：1表示按名称搜索，2表示按编号搜索
+//参数operation：1表示删除搜索到的产品，2表示打印显示搜索到的产品 
+//***************************************************************
+void search_imformation(struct Table **head,int way, int operation)
+{
+	struct Table *previous;
+	struct Table *current;
+	previous = NULL;
+	current = *head;          //当前指针指向头指针
+	char name[11];          //用于存放输入的要搜索的产品名称 
+	int id;         //用于存放输入的要搜索的产品编号 
+	if (way == 1)
+	{
+		printf("\n请输入产品名称：");
+		scanf_s("%s", name, 11);
+
+		while (current != NULL && strcmp(current->name, name))          //直到当前指针指向NULL 或 找到产品名称时，结束循环
+		{
+			previous = current;          //前一个指针指向当前指针
+			current = current->next;          //当前指针指向下一指针
+		}
+	}
+	else
+	{
+		printf("\n请输入产品编号：");
+		scanf_s("%d", &id);
+
+		while (current != NULL && current->id!=id)          //直到当前指针指向NULL 或 找到编号时，结束循环
+		{
+			previous = current;         //前一个指针指向当前指针
+			current = current->next;    //当前指针指向下一指针
+		}
+	}
+	if (current == NULL)          //以当前指针为NULL结束循环，表示没有找到产品 
+	{
+		if (way == 1)
+		{
+			printf("请确认您输入的名称是否正确\n");
+		}
+		else
+		{
+			printf("请确认您输入的id是否正确\n");
+		}
+	}
+	else
+	{
+		if (operation == 1)        //操作为删除
+		{
+			if(previous==NULL)        //若前指针为NULL，则表示要删除的为第一个结构体，需要将头指针指向下一个结构体
+			{
+				*head = current->next;        //头指针指向下一个结构体
+				free(current);        //释放要删除的结构体
+				system("cls");
+				printf("删除成功！\n");
+			}
+			else
+			{
+				previous->next = current->next;        //前结构体的指向指针指向下一个结构体
+				free(current);
+				system("cls");
+				printf("删除成功！\n");
+			}
+		}
+		else       //为搜索指定产品的情况
+		{
+			printf("\n产品名称\t数量\t存放的库号");        //打印搜索到的产品信息
+			printf("\n%s\t\t%d\t%d\n\n", current->name, current->shuliang, current->kuhao);
+		}
+	}
+}
+
+void printf_imformation(struct Table *head)
+{
+	struct Table *temp;
+	temp = head;
+	printf("\n产品名称\t编号\t数量\t存放的库号");
+	while (temp != NULL)        //直到temp指向NULL时，即指向单链表的尾部时结束循环
+	{
+		printf("\n%s\t\t%d\t%d\t%d\n\n", temp->name, temp->id, temp->shuliang, temp->kuhao);
+		temp = temp->next;        //指向下一结构体
+	}
+	printf("\n");
+}
+
+void fputs_information(struct Table *head)
+{
+	struct Table *temp;
+	temp = head;
+	FILE *fp;
+	fp=fopen("d:\\file.txt","w");
+	if(fp==NULL)
+	printf("\n不能打开文件！"),exit(1);
+	while(temp !=NULL){
+		fprintf(fp,"%s ",temp->name);
+        fprintf(fp,"%d ",temp->id);
+        fprintf(fp,"%d", temp->shuliang);
+        fprintf(fp,"%d", temp->kuhao);
+        fprintf(fp,"%s","\r\n");//换行
+		temp=temp->next;
+	}
+	if(fclose(fp))
+	{printf("不能关闭文件！\n");
+	exit(1);
+	}
+	 printf("\n");
+}
+
+
+void free_imformation(struct Table **head)        //释放堆的函数
+{
+	struct Table *temp;
+	temp = *head;
+	while (*head != NULL)        //直到指向NULL才结束循环
+	{
+		*head = (*head)->next;        //指向下一个结构体
+		free(temp);        //释放掉改结构体
+		temp = *head;        //指向下一结构体
+	}
+}
+
+
+
+
+int main(void)
+{
+	struct Table *head = NULL;        //头指针
+	int operation = 0;        //用于存放操作数
+	struct Goods
+	{
+		int id;//产品编号
+		int kudan1;//入库单号 
+		int kudan2;//出库单号 
+		char name[20];//名称
+		int num;//数量
+		
+		int kuhao;//库号 
+			
+	}goods[50];
+	struct Goods2 
+	{
+		int id;//产品编号
+		int kudan1;//入库单号 
+		int kudan2;//出库单号 
+		char name[20];//名称
+		int num2;//数量
+		
+		int kuhao;//库号 
+			
+	}ck[50];
+
+int i=0,j=0;//出库入库 
+int i2=0,j2=0;//盘库 
+int date,id;//盘库 
+int js=0,jjs=0,sum=0;//盘库加数，减数 
+int v;//初始化变量，重新判断赋值参与计算 
+	while (1)
+	{
+		printf("-----------------------------------------------\n");
+		printf("---------------欢迎使用本系统------------------\n");
+		printf("----1  产品信息添加----------------------------\n");
+		printf("----2  显示全部产品信息------------------------\n");
+		printf("----3  产品信息删除（按名称查找）--------------\n");
+		printf("----4  产品信息删除（按编号查找）--------------\n");
+		printf("----5  查询产品当前的库存情况（按名称查找）----\n");
+		printf("----6  查询产品当前的库存情况（按编号查找）----\n");
+		printf("----7  填写入库单------------------------------\n");
+		printf("----8  填写出库单------------------------------\n");
+		printf("----9  盘库------------------------------------\n");
+		printf("----10 退出------------------------------------\n");
+		printf("-----------------------------------------------\n");
+		printf("请输入您的操作：");
+		scanf_s("%d", &operation);
+		system("cls");
+		switch (operation)
+		{
+		case 1:add_imformation(&head);fputs_information(head); break;
+		case 2:printf_imformation(head); break;
+		case 3:search_imformation(&head, 1, 1); break;
+		case 4:search_imformation(&head, 2, 1); break;
+		case 5:search_imformation(&head, 1, 2); break;
+		case 6:search_imformation(&head, 2, 2); break;
+		case 7://入库 
+			
+		printf("请输入本次入库产品库号:\n");
+			scanf("%d",&goods[i].kuhao);
+			printf("请输入产品信息\n");
+		    printf("产品名称：\n");
+	        scanf("%s",&goods[i].name);		
+		    printf("产品编号：\n");
+		    scanf("%d",&goods[i].id);
+		    printf("例：2022年1月填为202201\n");
+			printf("入库单号：\n");
+			scanf("%d",&goods[i].kudan1);
+			printf("数量:\n");
+			scanf("%d",&goods[i].num);
+			++i;
+		 break;
+		 case 8://出库
+		 
+		    printf("请输入本次出库产品库号：\n"); 
+		    scanf("%d", &ck[j].kuhao);
+		    printf("请输入产品信息\n");
+		    printf("产品名称：\n");
+	        scanf("%s",&ck[j].name);	
+			printf("例：2022年1月填为202201\n");
+			printf("请输入出库单号\n");
+			scanf("%d",&ck[j].kudan2);
+	        printf("请输入产品编号：\n");
+	        scanf("%d",&ck[j].id);
+	        printf("请输入出库数量：\n");
+	        scanf("%d",&ck[j].num2);
+			++j;
+			break;
+ 		case 9:
+ 			printf("例：2022年1月填为202201\n");
+		 	printf("请选择一段日期进行查询：\n");
+		 	scanf_s("%d",&date);
+		 	printf("你选择的日期是%d\n",date);
+		 	for(id=1;id<=i;id++){
+				for(i2=0;i2<i;i2++){
+				
+		 		//入库单 
+		 		if(date==goods[i2].kudan1&&id==goods[i2].id)
+				{
+				js+=goods[i2].num;
+			 	printf("该段日期%s的入库数为%d\n",goods[i2].name,js);
+			 	v++;
+				 }
+		 		//出库单 
+		 		if(date==ck[i2].kudan2&&id==ck[i2].id)
+				{
+				jjs+=ck[i2].num2;
+			 	printf("该段日期%s的出库数为%d\n",ck[i2].name,jjs);
+			 	v++;
+				 }
+				if(v>0){
+				sum=js-jjs;
+				printf("该段日期%s的出入库总数为%d\n",goods[i2].name,sum); 
+				v=0;
+				js=0;
+				jjs=0;
+				j2++;
+				}
+			}
+		}
+		if(j2==0)
+		printf("该时间段内没有物资调动\n");
+			j2=0; 
+			js=0;
+			jjs=0;
+			sum=0;
+		 	break;
+		 	
+		default :free_imformation(&head);        //程序结束需要释放堆栈
+		}
+		if (!(operation < 10))       //若非小于10的操作数，跳出死循环，结束程序
+		{
+			break;
+		}
+	}
+	system("pause");
+	return 0;
+}

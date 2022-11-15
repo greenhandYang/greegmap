@@ -1,0 +1,300 @@
+#include <stdio.h>
+#include <stdlib.h>
+#include <string.h>
+
+struct Table
+{
+	char name[11];
+	int student_number;
+	int Chinese_score;
+	int math_score;
+	int English_score;
+	int computer_score;
+	struct Table *next;
+};
+
+void add_student_imformation(struct Table **head)
+{
+	struct Table *temp;
+	temp = (struct Table *)malloc(sizeof(struct Table));    //
+	if (temp == NULL)
+	{
+		printf("内存分配失败！");
+		return;
+	}
+	printf("\n请输入学生姓名：");
+	scanf_s("%s", temp->name, 11);
+	printf("\n请输入学生学号：");
+	scanf_s("%d", &temp->student_number);
+	printf("\n请输入语文成绩：");
+	scanf_s("%d", &temp->Chinese_score);
+	printf("\n请输入数学成绩：");
+	scanf_s("%d", &temp->math_score);
+	printf("\n请输入英语成绩：");
+	scanf_s("%d", &temp->English_score);
+	printf("\n请输入计算机成绩：");
+	scanf_s("%d", &temp->computer_score);
+	printf("\n录入完成！\n");
+	temp->next = *head;          //
+	*head = temp;      //
+}
+
+//////////////////////////////////////////////////////////////
+//搜索指定学生的函数，根据操作数进行删除或显示
+//参数way：1表示按姓名搜索，2表示按学号搜索
+//参数operation：1表示删除搜索到的学生，2表示打印显示搜索到的学生
+//////////////////////////////////////////////////////////////
+void search_imformation(struct Table **head,int way, int operation)
+{
+	struct Table *previous;
+	struct Table *current;
+	previous = NULL;
+	current = *head;          //当前指针指向头指针
+	char name[11];          //用于存放输入的要搜索的学生姓名
+	int number;         //用于存放输入的要搜索的学生学号
+	if (way == 1)
+	{
+		printf("\n请输入学生姓名：");
+		scanf_s("%s", name, 11);
+
+		while (current != NULL && strcmp(current->name, name))          //直到当前指针指向NULL 或 找到名字时，结束循环
+		{
+			previous = current;          //前一个指针指向当前指针
+			current = current->next;          //当前指针指向下一指针
+		}
+	}
+	else
+	{
+		printf("\n请输入学生学号：");
+		scanf_s("%d", &number);
+
+		while (current != NULL && current->student_number!=number)          //直到当前指针指向NULL 或 找到学号时，结束循环
+		{
+			previous = current;         //前一个指针指向当前指针
+			current = current->next;    //当前指针指向下一指针
+		}
+	}
+	if (current == NULL)          //以当前指针为NULL结束循环，表示没有找到学生
+	{
+		if (way == 1)
+		{
+			printf("请确认您输入的姓名是否正确\n");
+		}
+		else
+		{
+			printf("请确认您输入的学号是否正确\n");
+		}
+	}
+	else
+	{
+		if (operation == 1)        //操作为删除
+		{
+			if(previous==NULL)        //若前指针为NULL，则表示要删除的为第一个结构体，需要将头指针指向下一个结构体
+			{
+				*head = current->next;        //头指针指向下一个结构体
+				free(current);        //释放要删除的结构体
+				system("cls");
+				printf("删除成功！\n");
+			}
+			else
+			{
+				previous->next = current->next;        //前结构体的指向指针指向下一个结构体
+				free(current);
+				system("cls");
+				printf("删除成功！\n");
+			}
+		}
+		else       //为搜索指定学生的情况
+		{
+			printf("\n学生姓名\t学号\t语文\t数学\t英语\t计算机");        //打印搜索到的学生信息
+			printf("\n%s\t%d\t%d\t%d\t%d\t%d\n\n", current->name, current->student_number, current->Chinese_score, current->math_score, current->English_score, current->computer_score);
+		}
+	}
+}
+
+void printf_imformation(struct Table *head)
+{
+	struct Table *temp;
+	temp = head;
+	printf("\n学生姓名\t学号\t语文\t数学\t英语\t计算机");
+	while (temp != NULL)        //直到temp指向NULL时，即指向单链表的尾部时结束循环
+	{
+		printf("\n%s\t%d\t%d\t%d\t%d\t%d\n", temp->name, temp->student_number, temp->Chinese_score, temp->math_score, temp->English_score, temp->computer_score);
+		temp = temp->next;        //指向下一结构体
+	}
+	printf("\n");
+}
+
+void fputs_information(struct Table *head)
+{
+	struct Table *temp;
+	temp = head;
+	FILE *fp;
+	fp=fopen("d:\\stu.txt","w");
+	if(fp==NULL)
+	printf("\n不能打开文件！"),exit(1);
+	while(temp !=NULL){
+		fprintf(fp,"%s ",temp->name);
+        fprintf(fp,"%d ",temp->student_number);
+        fprintf(fp,"%d", temp->Chinese_score);
+        fprintf(fp,"%d", temp->math_score);
+        fprintf(fp,"%d", temp->English_score);
+        fprintf(fp,"%d", temp->computer_score);
+         fprintf(fp,"%s","\r\n");//换行
+		temp=temp->next;
+	}
+	if(fclose(fp))
+	{printf("不能关闭文件！\n");
+	exit(1);
+	}
+	 printf("\n");
+}
+/////////////////////////////////////////////////////////////////
+//排序函数，按输入参数确定排序方法
+//参数**head：头指针的地址，因需要修改头指针
+//参数operation：排序原则标志位
+//            1：按姓名
+//            2：按学号
+//            3：按语文
+//            4：按数学
+//            5：按英语
+//            6：按计算机
+/////////////////////////////////////////////////////////////////
+void rank_by_operation(struct Table **head, int operation)
+{
+	struct Table *later;
+	struct Table *previous;
+	struct Table *current;
+	int numb = 0,i = 0, j = 0, flag = 0;   //numb存放学生数量，i为外圈循环，j为内圈循环，flag存放是否需要交换单链表顺序            
+	current = *head;       //当前指针指向头指针
+	while (current != NULL)       //每次循环numb +1，且当前指针指向下一结构体，直到当前指针指向NULL时结束循环
+	{
+		numb++;
+		current = current->next;
+	}
+	for (i = 0; i < numb-1; i++)       //冒泡法外圈循环，需要numb-1次
+	{
+		previous = NULL;       //每次外圈循环，前指针指向NULL
+		current = *head;       //当前指针指向头指针
+		later = current->next;       //下一指针指向头指针的下一结构体
+		for (j = 0; j < numb - 1 - i; j++)       //冒泡法内圈循环，需要numb-1-i次
+		{
+			if ((strcmp(current->name, later->name)) > 0 && operation==1)//按姓名排序，当前姓名大于下一姓名，需要交换顺序
+			{
+				flag = 1;
+			}
+			else if (current->student_number > later->student_number && operation == 2)//按学号排序，当前学号大于下一学号，需要交换顺序
+			{
+				flag = 1;
+			}
+			else if (current->Chinese_score > later->Chinese_score && operation == 3)//按语文排序，当前语文大于下一语文，需要交换顺序
+			{
+				flag = 1;
+			}
+			else if (current->math_score > later->math_score && operation == 4)//按数学排序，当前数学大于下一数学，需要交换顺序
+			{
+				flag = 1;
+			}
+			else if (current->English_score > later->English_score && operation == 5)//按英语排序，当前英语大于下一英语，需要交换顺序
+			{
+				flag = 1;
+			}
+			else if (current->computer_score > later->computer_score && operation == 6)//按计算机排序，当前计算机大于下一计算机，需要交换顺序
+			{
+				flag = 1;
+			}
+			else
+			{
+				flag = 0;       //当排序逻辑不满足时，不需要调换顺序
+			}
+			if (flag == 1)       //当调换顺序标志位为1时，需要调换一次顺序
+			{
+				if (previous == NULL)       //若前指针为NULL，头指针指向current，调换顺序时，需要更改头指针指向later指向的结构体
+				{
+					current->next = later->next;        //当前指针的指向指针改为下一指针的指向指针，即指向下下个结构体
+					later->next = current;        //下一指针的指向指针改为当前指针，即指向当前的结构体
+					*head = later;        //头指针指向下一指针，即下一指针变为头指针
+					previous = later;        //前指针指向下一指针，因为调换顺序后，下一指针变为第一个指针
+					later = current->next;        //下一指针指向当前指针的指向指针，其已经更改为指向下下个结构体了
+				}
+				else
+				{
+					previous->next = later;        //前指针的指向指针改为下一指针，把下一结构体和当前结构体调换位置
+					current->next = later->next;        //当前指针的指向指针改为下一指针的指向指针，即指向下下个结构体
+					later->next = current;        //下一指针的指向指针改为当前指针，实现调换位置
+					previous = later;        //前指针改为下一指针，因为调换顺序后，下一次循环中下一指针变为前指针
+					later = current->next;     //下一指针改为指向下下个结构体，进入下一循环
+				}
+			}
+			else        //在不用调换顺序的情况下
+			{
+				previous = current;        //前指针改为当前指针
+				current = later;        //当前指针改为下一指针
+				later = later->next;        //下一指针改为下下一指针，指向的是下下个结构体
+			}
+		}
+	}
+}
+
+void rank(struct Table **head)
+{
+	system("cls");
+	int operation;        //用于存放操作数
+	printf("请输入排序的依据：\n");
+	printf("1  姓名\n");
+	printf("2  学号\n");
+	printf("3  语文\n");
+	printf("4  数学\n");
+	printf("5  英语\n");
+	printf("6  计算机\n");
+	scanf_s("%d", &operation);
+	rank_by_operation(head, operation);        //调用排序函数，以头指针的地址和操作数为参数
+}
+
+void free_imformation(struct Table **head)        //释放堆的函数
+{
+	struct Table *temp;
+	temp = *head;
+	while (*head != NULL)        //直到指向NULL才结束循环
+	{
+		*head = (*head)->next;        //指向下一个结构体
+		free(temp);        //释放掉改结构体
+		temp = *head;        //指向下一结构体
+	}
+}
+
+int main(void)
+{
+	struct Table *head = NULL;        //头指针
+	int operation = 0;        //用于存放操作数
+	while (1)
+	{
+		printf("1  学生信息添加\n");
+		printf("2  显示全部学生信息\n");
+		printf("3  学生信息删除（按姓名查找）\n");
+		printf("4  学生信息删除（按学号查找）\n");
+		printf("5  学生信息查找（按姓名查找）\n");
+		printf("6  学生信息查找（按学号查找）\n");
+		printf("7  学生信息排序\n");
+		printf("请输入您的操作：");
+		scanf_s("%d", &operation);
+		system("cls");
+		switch (operation)
+		{
+		case 1:add_student_imformation(&head);fputs_information(head); break;
+		case 2:printf_imformation(head); break;
+		case 3:search_imformation(&head, 1, 1); break;
+		case 4:search_imformation(&head, 2, 1); break;
+		case 5:search_imformation(&head, 1, 2); break;
+		case 6:search_imformation(&head, 2, 2); break;
+		case 7:rank(&head); break;
+		default :free_imformation(&head);        //程序结束需要释放堆栈
+		}
+		if (!(operation < 8))        //若非小于8的操作数，跳出死循环，结束程序
+		{
+			break;
+		}
+	}
+	system("pause");
+	return 0;
+}

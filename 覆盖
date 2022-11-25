@@ -1,0 +1,43 @@
+package texttable;
+
+
+public class first {
+	public static void main(String[] args) {
+	
+
+	materials b1=new materials();
+	wood b2=new wood();
+	b1.setprice(9.0);
+	b1.setName("materials1");
+	b1.getinformation();
+	b2.getinformation();
+
+
+	}
+
+}
+ class materials{
+	 protected double price;
+	 protected String name;
+	public void getinformation(){
+		System.out.println("名称和单价"+name+"      "+price);
+	}
+
+	public void setprice(double price) {
+		this.price = price;
+	}
+
+
+	public void setName(String name) {
+		this.name = name;
+	}
+
+	
+	
+}
+ class wood extends materials{
+	 private String color="Blue";
+	 public void getinformation(){
+			System.out.println("木材颜色"+color);
+		}
+ }

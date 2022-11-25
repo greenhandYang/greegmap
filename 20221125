@@ -1,0 +1,42 @@
+package texttable;
+
+
+public class first {
+	public static void main(String[] args) {
+	
+	System.out.println("输入半径和颜色：");
+	ball b1=new ball();
+	Billiards b2=new Billiards();
+	b1.setR(9.0);
+	b2.setColor("BLUE");
+	b2.setR(3.0);//对父类变量无影响
+	
+	System.out.println("球的半径"+b1.getR()+"台球的颜色和半径"+b2.getColor());
+
+	}
+
+}
+ class ball{
+	 private double r;
+
+	public double getR() {
+		return r;
+	}
+
+	public void setR(double r) {
+		this.r = r;
+	}
+	 
+	
+}
+ class Billiards extends ball{
+	 private String color;
+
+	public String getColor() {
+		return color+getR();
+	}
+	
+	public void setColor(String color) {
+		this.color = color;
+	}
+ }
